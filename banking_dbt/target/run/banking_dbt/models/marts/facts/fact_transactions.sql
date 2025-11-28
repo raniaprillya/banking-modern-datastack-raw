@@ -1,0 +1,30 @@
+-- back compat for old kwarg name
+  
+  begin;
+    
+        
+            
+	    
+	    
+            
+        
+    
+
+    
+
+    merge into banking.analytics.fact_transactions as DBT_INTERNAL_DEST
+        using banking.analytics.fact_transactions__dbt_tmp as DBT_INTERNAL_SOURCE
+        on ((DBT_INTERNAL_SOURCE.transaction_id = DBT_INTERNAL_DEST.transaction_id))
+
+    
+    when matched then update set
+        "TRANSACTION_ID" = DBT_INTERNAL_SOURCE."TRANSACTION_ID","ACCOUNT_ID" = DBT_INTERNAL_SOURCE."ACCOUNT_ID","CUSTOMER_ID" = DBT_INTERNAL_SOURCE."CUSTOMER_ID","AMOUNT" = DBT_INTERNAL_SOURCE."AMOUNT","RELATED_ACCOUNT_ID" = DBT_INTERNAL_SOURCE."RELATED_ACCOUNT_ID","STATUS" = DBT_INTERNAL_SOURCE."STATUS","TRANSACTION_TYPE" = DBT_INTERNAL_SOURCE."TRANSACTION_TYPE","TRANSACTION_TIME" = DBT_INTERNAL_SOURCE."TRANSACTION_TIME","LOAD_TIMESTAMP" = DBT_INTERNAL_SOURCE."LOAD_TIMESTAMP"
+    
+
+    when not matched then insert
+        ("TRANSACTION_ID", "ACCOUNT_ID", "CUSTOMER_ID", "AMOUNT", "RELATED_ACCOUNT_ID", "STATUS", "TRANSACTION_TYPE", "TRANSACTION_TIME", "LOAD_TIMESTAMP")
+    values
+        ("TRANSACTION_ID", "ACCOUNT_ID", "CUSTOMER_ID", "AMOUNT", "RELATED_ACCOUNT_ID", "STATUS", "TRANSACTION_TYPE", "TRANSACTION_TIME", "LOAD_TIMESTAMP")
+
+;
+    commit;

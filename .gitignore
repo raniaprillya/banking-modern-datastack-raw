@@ -1,0 +1,21 @@
+# GitHub Actions cache
+/.github/.cache
+
+# Docker cache
+docker/logs/
+docker/minio/
+docker/plugins/
+docker/postgres/
+
+# DBT cache
+banking_dbt/.dbt/
+banking_dbt/logs/
+
+.env
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+.DS_Store
+docker-compose.override.yml
+logs/
